@@ -1,1 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+  />
+  <title>Tính Xây Nhà Pro</title>
 
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Tính Xây Nhà" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>Tính Xây Nhà Pro</h1>
+        <p>Nhập ít, ra số nhanh, dùng thực chiến</p>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="card">
+        <div class="section-head">
+          <h2>Thông số công trình</h2>
+        </div>
+
+        <div class="grid two">
+          <label class="field">
+            <span>Chiều dài (m)</span>
+            <input type="number" id="length" min="0" step="0.01" placeholder="Ví dụ: 5" />
+          </label>
+
+          <label class="field">
+            <span>Chiều rộng (m)</span>
+            <input type="number" id="width" min="0" step="0.01" placeholder="Ví dụ: 20" />
+          </label>
+        </div>
+
+        <div class="grid one">
+          <label class="field">
+            <span>Loại nhà</span>
+            <select id="houseType">
+              <option value="cap4">Nhà cấp 4</option>
+              <option value="tang">Nhà tầng</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="floorWrap" class="grid one hidden">
+          <label class="field">
+            <span>Số tầng</span>
+            <select id="floors">
+              <option value="2">2 tầng</option>
+              <option value="3">3 tầng</option>
+              <option value="4">4 tầng</option>
+              <option value="5">5 tầng</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="grid one">
+          <label class="field">
+            <span>Loại mái</span>
+            <select id="roofType">
+              <option value="none">Không mái</option>
+              <option value="nhat">Mái Nhật</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="roofOptions" class="grid two hidden">
+          <label class="field">
+            <span>Hệ số mái Nhật</span>
+            <select id="roofFactor">
+              <option value="1.3">1.3 - Dốc thấp</option>
+              <option value="1.4" selected>1.4 - Phổ biến</option>
+              <option value="1.5">1.5 - Dốc cao</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Loại ngói</span>
+            <select id="tileRate">
+              <option value="10">Ngói 10 viên/m²</option>
+              <option value="22">Ngói 22 viên/m²</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="calcBtn">Tính ngay</button>
+          <button class="btn ghost" id="resetBtn">Đặt lại</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>Đơn giá chỉnh sửa</h2>
+          <button class="mini-btn" id="toggleRatesBtn">Ẩn / Hiện</button>
+        </div>
+
+        <div id="rateBox" class="grid two">
+          <label class="field">
+            <span>Xây thô (đ/m²)</span>
+            <input type="number" id="rawRate" value="3800000" />
+          </label>
+
+          <label class="field">
+            <span>Hoàn thiện (đ/m²)</span>
+            <input type="number" id="finishRate" value="5500000" />
+          </label>
+
+          <label class="field">
+            <span>Xây + nội thất (đ/m²)</span>
+            <input type="number" id="fullRate" value="6500000" />
+          </label>
+
+          <label class="field">
+            <span>Chi phí mái (đ/m² mái)</span>
+            <input type="number" id="roofRate" value="1000000" />
+          </label>
+
+          <label class="field">
+            <span>Chi phí móng (đ/m² sàn)</span>
+            <input type="number" id="foundationRate" value="600000" />
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>Kết quả nhanh</h2>
+          <button class="mini-btn" id="copyBtn">Copy kết quả</button>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-item">
+            <span>Diện tích 1 sàn</span>
+            <strong id="oneFloorArea">0 m²</strong>
+          </div>
+          <div class="result-item">
+            <span>Tổng diện tích sàn</span>
+            <strong id="totalFloorArea">0 m²</strong>
+          </div>
+          <div class="result-item">
+            <span>Diện tích mái</span>
+            <strong id="roofArea">0 m²</strong>
+          </div>
+          <div class="result-item">
+            <span>Số lượng ngói</span>
+            <strong id="tileQty">0 viên</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Khối lượng vật tư sơ bộ</h2>
+        <div class="result-grid">
+          <div class="result-item">
+            <span>Gạch xây</span>
+            <strong id="brickQty">0 viên</strong>
+          </div>
+          <div class="result-item">
+            <span>Thép</span>
+            <strong id="steelQty">0 tấn</strong>
+          </div>
+          <div class="result-item">
+            <span>Cát</span>
+            <strong id="sandQty">0 m³</strong>
+          </div>
+          <div class="result-item">
+            <span>Xi măng</span>
+            <strong id="cementQty">0 tấn</strong>
+          </div>
+          <div class="result-item">
+            <span>Bê tông</span>
+            <strong id="concreteQty">0 m³</strong>
+          </div>
+          <div class="result-item">
+            <span>Diện tích trát</span>
+            <strong id="plasterQty">0 m²</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Chi phí sơ bộ</h2>
+        <div class="result-grid">
+          <div class="result-item">
+            <span>Chi phí móng</span>
+            <strong id="foundationCost">0 đ</strong>
+          </div>
+          <div class="result-item">
+            <span>Xây thô</span>
+            <strong id="rawCost">0 đ</strong>
+          </div>
+          <div class="result-item">
+            <span>Hoàn thiện cơ bản</span>
+            <strong id="finishCost">0 đ</strong>
+          </div>
+          <div class="result-item">
+            <span>Xây + nội thất</span>
+            <strong id="fullCost">0 đ</strong>
+          </div>
+          <div class="result-item">
+            <span>Chi phí mái</span>
+            <strong id="roofCost">0 đ</strong>
+          </div>
+          <div class="result-item highlight">
+            <span>Tổng tạm tính</span>
+            <strong id="grandTotal">0 đ</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="card note-card">
+        <p>
+          Kết quả này là ước lượng sơ bộ để tư vấn nhanh. Khi chốt thi công thật,
+          vẫn phải kiểm tra móng, kết cấu, chiều cao tầng, loại vật liệu, vị trí xây dựng
+          và mức hoàn thiện thực tế.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
