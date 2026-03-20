@@ -1,0 +1,23 @@
+{
+  "name": "Tính Xây Nhà Pro",
+  "short_name": "Xây Nhà",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f2f5fb",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "lang": "vi",
+  "description": "App tính sơ bộ diện tích, vật tư, chi phí, mái Nhật và lượng ngói cho nhà cấp 4 hoặc nhà tầng.",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
